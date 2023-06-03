@@ -1,0 +1,20 @@
+[s3]
+bucket_name = photoapp-camilochafloque
+
+[rds]
+endpoint = localhost
+port_number = 3306
+region_name = us-east-2
+user_name = root
+user_pwd = mrchafo2619
+db_name = photoapp
+
+[s3readonly]
+region_name = us-east-2
+aws_access_key_id = AKIASCTLTNEGNY7XP5MB
+aws_secret_access_key = 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
+
+[s3readwrite]
+region_name = us-east-2
+aws_access_key_id = AKIASCTLTNEGAO6ABD5J
+aws_secret_access_key = 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
