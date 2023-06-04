@@ -2,14 +2,13 @@ const { StatusCodes } = require("http-status-codes");
 const {
   insertImage,
   getUserById,
+  getImagesByUserId,
   getImageInfoByKey,
-  deleteImageByKey,
 } = require("../db/queries");
 const {
   uploadImageToS3,
   getS3Images,
   getS3ImagesByUser,
-  deleteS3ImageByKey,
 } = require("../s3/operations");
 
 //@desc     Upload logged-in user image
@@ -66,10 +65,10 @@ exports.getAllImages = async (req, res) => {
 exports.getUserImages = async (req, res) => {
   try {
     const key = req.params.id;
-    const response = await getS3ImagesByUser(key);
+    const response = await getImagesByUserId(req.user.userId);
     res.status(StatusCodes.OK).json({
       message: "success",
-      data: response["KeyCount"] > 0 ? response["Contents"] : [],
+      data: response.length > 0 ? response : [],
     });
   } catch (err) {
     res.status(StatusCodes.BAD_REQUEST).json({
@@ -89,26 +88,6 @@ exports.getImageInfoByKey = async (req, res) => {
     res.status(StatusCodes.OK).json({
       status: "success",
       result: result[0],
-    });
-  } catch (err) {
-    res.status(StatusCodes.BAD_REQUEST).json({
-      status: "error",
-      message: err,
-    });
-  }
-};
-
-//@desc     Delete the image with the key 'key'
-//@route    DELETE /api/v1/images
-//@access   protected
-exports.deleteImageByKey = async (req, res) => {
-  try {
-    const key = req.query.key;
-    await deleteS3ImageByKey(key);
-    await deleteImageByKey(key);
-    res.status(StatusCodes.OK).json({
-      status: "success",
-      message: "Photo successfully deleted",
     });
   } catch (err) {
     res.status(StatusCodes.BAD_REQUEST).json({

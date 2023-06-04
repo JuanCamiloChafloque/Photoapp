@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { BsFillTrashFill } from "react-icons/bs";
 import { Container, Image } from "react-bootstrap";
 
 const MyPhotos = () => {
@@ -60,18 +59,20 @@ const MyPhotos = () => {
       </p>
       <Container className="my-images-container">
         {images &&
-          images
-            .filter((im) => im.Size > 0)
-            .map((im, idx) => (
-              <Container key={idx} className="d-block text-center">
-                <Image src={BUCKET_BASE_URL + im.Key} />
-                <BsFillTrashFill
-                  className="delete-icon"
-                  size={28}
-                  onClick={() => handleDelete(im.Key)}
-                />
-              </Container>
-            ))}
+          images.map((im, idx) => (
+            <Container key={idx} className="d-block">
+              <Image src={BUCKET_BASE_URL + im.bucketKey} />
+              <p className="ps-2 p-0 m-0">
+                <strong>Photo name:</strong> {im.assetName}
+              </p>
+              <p className="ps-2 p-0 m-0">
+                <strong>Description:</strong> {im.description}
+              </p>
+              <p className="ps-2 p-0 m-0">
+                <strong>Date taken:</strong>
+              </p>
+            </Container>
+          ))}
       </Container>
       {images && images.length === 0 && (
         <Container className="w-100 text-center mb-3">

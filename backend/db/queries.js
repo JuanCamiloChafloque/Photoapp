@@ -40,6 +40,19 @@ exports.getImageInfoByKey = (key) => {
   });
 };
 
+exports.getImagesByUserId = (id) => {
+  return new Promise((resolve, reject) => {
+    const sql = "SELECT * FROM assets WHERE userId = ?";
+    dbConnection.query(sql, [id], (err, results, _) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(results);
+    });
+  });
+};
+
 exports.getAllUsers = () => {
   return new Promise((resolve, reject) => {
     const sql = "SELECT * FROM users ORDER BY id ASC;";
@@ -86,19 +99,6 @@ exports.insertImage = (userId, assetName, description, bucketKey) => {
         resolve(results);
       }
     );
-  });
-};
-
-exports.deleteImageByKey = (key) => {
-  return new Promise((resolve, reject) => {
-    const sql = "DELETE FROM assets WHERE bucketKey = ?;";
-    dbConnection.query(sql, [key], (err, results, _) => {
-      if (err) {
-        reject(err);
-        return;
-      }
-      resolve(results);
-    });
   });
 };
 
