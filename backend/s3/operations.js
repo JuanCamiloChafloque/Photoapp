@@ -44,20 +44,10 @@ exports.getS3ImagesByUser = async (bucketFolder) => {
   return response;
 };
 
-exports.getS3ImageByKey = async (key) => {
-  const input = {
-    Bucket: s3_bucket_name,
-    Key: key,
-  };
-  const command = new GetObjectCommand(input);
-  const response = await s3.send(command);
-  return response;
-};
-
 exports.deleteS3ImageByKey = async (key) => {
   const input = {
     Bucket: s3_bucket_name,
-    Key: "57998938-43a9-493c-a487-c46b42f94a87/2211dd3e-2b8a-4bb4-80b7-9862a41a290a.jpg",
+    Key: key,
   };
   const command = new DeleteObjectCommand(input);
   await s3.send(command);

@@ -1,5 +1,10 @@
 const { StatusCodes } = require("http-status-codes");
-const { insertImage, getUserById, deleteImageByKey } = require("../db/queries");
+const {
+  insertImage,
+  getUserById,
+  getImageInfoByKey,
+  deleteImageByKey,
+} = require("../db/queries");
 const {
   uploadImageToS3,
   getS3Images,
@@ -65,6 +70,25 @@ exports.getUserImages = async (req, res) => {
     res.status(StatusCodes.OK).json({
       message: "success",
       data: response["KeyCount"] > 0 ? response["Contents"] : [],
+    });
+  } catch (err) {
+    res.status(StatusCodes.BAD_REQUEST).json({
+      status: "error",
+      message: err,
+    });
+  }
+};
+
+//@desc     Get the image details with the key 'key'
+//@route    GET /api/v1/images/details
+//@access   protected
+exports.getImageInfoByKey = async (req, res) => {
+  try {
+    const key = req.query.key;
+    const result = await getImageInfoByKey(key);
+    res.status(StatusCodes.OK).json({
+      status: "success",
+      result: result[0],
     });
   } catch (err) {
     res.status(StatusCodes.BAD_REQUEST).json({

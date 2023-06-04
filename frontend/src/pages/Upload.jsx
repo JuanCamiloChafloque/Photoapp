@@ -55,7 +55,13 @@ const Upload = () => {
     input.click();
   };
 
-  const handleMetadataInfo = () => {};
+  const handleMetadataInfo = () => {
+    var img = document.getElementById("upload-photo");
+    EXIF.getData(imageFile, function () {
+      var MetaData = EXIF.getAllTags(this);
+      console.log(JSON.stringify(MetaData, null, "\t"));
+    });
+  };
 
   const validateForm = () => {
     if (!imageFile || !name || !description) {
@@ -84,7 +90,12 @@ const Upload = () => {
           <Container className="mb-4 text-center">
             {imageFile ? (
               <>
-                <Image src={preview} width={250} height={200} />
+                <Image
+                  id="upload-photo"
+                  src={preview}
+                  width={250}
+                  height={200}
+                />
                 <Button
                   variant="warning"
                   type="button"

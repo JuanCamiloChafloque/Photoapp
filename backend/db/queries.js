@@ -26,10 +26,10 @@ exports.getUserById = (id) => {
   });
 };
 
-exports.getUserByImageKey = (key) => {
+exports.getImageInfoByKey = (key) => {
   return new Promise((resolve, reject) => {
     const sql =
-      "SELECT * FROM users u LEFT INNER JOIN assets a ON u.id = a.userId  WHERE a.bucketKey = ?";
+      "SELECT * FROM users u JOIN assets a ON u.id = a.userId WHERE a.bucketKey = ?";
     dbConnection.query(sql, [key], (err, results, _) => {
       if (err) {
         reject(err);

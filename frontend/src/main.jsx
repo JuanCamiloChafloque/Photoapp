@@ -9,6 +9,7 @@ import "./styles/upload.css";
 import "./styles/home.css";
 import "./styles/my-photos.css";
 import "./styles/profile.css";
+import "./styles/details.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

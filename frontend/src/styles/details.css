@@ -1,0 +1,35 @@
+.details-container {
+  margin: 0;
+  padding: 0;
+  min-width: 100%;
+  min-height: 92.6vh;
+  display: flex;
+}
+
+.details-image {
+  margin: 0;
+  padding: 0;
+  min-width: 50%;
+  text-align: center;
+}
+
+.details-image img {
+  padding: 30px;
+  border-radius: 50px;
+  width: 100%;
+  height: auto;
+}
+
+.details-info {
+  margin: 0;
+  padding: 30px;
+  min-width: 50%;
+}
+
+.details-info h1 {
+  font-size: 24px;
+}
+
+.details-info h4 {
+  font-size: 20px;
+}

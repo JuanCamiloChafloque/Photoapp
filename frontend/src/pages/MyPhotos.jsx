@@ -51,7 +51,13 @@ const MyPhotos = () => {
 
   return (
     <Container className="mt-5">
-      <h3>Your uploaded photos!</h3>
+      <h2 className="text-muted m-0 p-0">
+        Your uploaded photos, {profile.user.firstName}!
+      </h2>
+      <p className="text-muted m-0 p-0 mb-4">
+        This are all the photos you've uploaded to 📸 PhotoApp and shared with
+        the world!
+      </p>
       <Container className="my-images-container">
         {images &&
           images
