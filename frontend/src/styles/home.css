@@ -16,3 +16,9 @@
   transform: scale(1.05);
   transition: 0.5s;
 }
+
+.filter-icon:hover {
+  cursor: pointer;
+  transform: scale(1.4);
+  transition: 0.5s;
+}

@@ -57,8 +57,8 @@ const MyPhotos = () => {
           images
             .filter((im) => im.Size > 0)
             .map((im, idx) => (
-              <Container className="d-block text-center">
-                <Image key={idx} src={BUCKET_BASE_URL + im.Key} />
+              <Container key={idx} className="d-block text-center">
+                <Image src={BUCKET_BASE_URL + im.Key} />
                 <BsFillTrashFill
                   className="delete-icon"
                   size={28}
