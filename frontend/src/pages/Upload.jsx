@@ -55,6 +55,8 @@ const Upload = () => {
     input.click();
   };
 
+  const handleMetadataInfo = () => {};
+
   const validateForm = () => {
     if (!imageFile || !name || !description) {
       setError("All fields are required");

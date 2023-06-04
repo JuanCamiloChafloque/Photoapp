@@ -89,6 +89,19 @@ exports.insertImage = (userId, assetName, description, bucketKey) => {
   });
 };
 
+exports.deleteImageByKey = (key) => {
+  return new Promise((resolve, reject) => {
+    const sql = "DELETE FROM assets WHERE bucketKey = ?;";
+    dbConnection.query(sql, [key], (err, results, _) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(results);
+    });
+  });
+};
+
 exports.updateUser = (id, email, firstName, lastName) => {
   return new Promise((resolve, reject) => {
     const sql =

@@ -1,0 +1,16 @@
+.my-images-container {
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+  margin-bottom: 20px;
+}
+
+.my-images-container img {
+  padding: 10px;
+  width: 400px;
+  height: 350px;
+  border-radius: 20px;
+}
+
+.delete-icon:hover {
+  cursor: pointer;
+}

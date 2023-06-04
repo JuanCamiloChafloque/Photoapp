@@ -1,0 +1,45 @@
+.profile-container {
+  margin: 0;
+  padding: 0;
+  min-width: 100%;
+  min-height: 90vh;
+  position: relative;
+}
+
+.update-container {
+  position: absolute;
+  background-color: white;
+  opacity: 0.9;
+  font-size: 13px;
+  max-width: 450px;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.update-container h3,
+.update-container h3 {
+  font-weight: bold;
+}
+
+.update-container h6,
+.update-container h6 {
+  margin-bottom: 30px;
+}
+
+.update-container label {
+  font-weight: bold;
+}
+
+.update-container button {
+  width: 100%;
+}
+
+.error-message {
+  font-weight: bold;
+  color: red;
+  margin-top: 10px;
+}

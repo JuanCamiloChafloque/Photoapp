@@ -2,14 +2,15 @@ const express = require("express");
 const {
   uploadImage,
   getAllImages,
-  getImageByKey,
+  deleteImageByKey,
+  getUserImages,
 } = require("../controllers/imagesController");
 const authMiddleware = require("../middleware/auth");
 
 const router = express.Router();
 
-router.route("/details").get(authMiddleware, getImageByKey);
-router.route("/").get(authMiddleware, getAllImages);
+router.route("/").get(authMiddleware, getAllImages).delete(deleteImageByKey);
+router.route("/:id").get(authMiddleware, getUserImages);
 router.route("/upload").post(authMiddleware, uploadImage);
 
 module.exports = router;

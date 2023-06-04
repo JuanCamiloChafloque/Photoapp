@@ -107,6 +107,7 @@ exports.updateProfile = async (req, res) => {
   await updateUser(id, email, firstName, lastName);
   const user = await getUserByEmail(email);
 
+  const token = createJWT(user[0].id);
   res.status(StatusCodes.OK).json({
     status: "success",
     user: {
@@ -116,5 +117,6 @@ exports.updateProfile = async (req, res) => {
       lastName: user[0].lastName,
       bucketFolder: user[0].bucketFolder,
     },
+    token: token,
   });
 };
