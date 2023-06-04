@@ -1,0 +1,12 @@
+.images-container {
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+  margin-bottom: 20px;
+}
+
+.images-container img {
+  padding: 10px;
+  width: 400px;
+  height: 350px;
+  border-radius: 20px;
+}

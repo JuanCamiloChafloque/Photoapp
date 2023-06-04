@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./styles/styles.css";
 import "./styles/auth.css";
 import "./styles/upload.css";
+import "./styles/home.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
