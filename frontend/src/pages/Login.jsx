@@ -43,37 +43,39 @@ const Login = () => {
 
   return (
     <Container className="signin-container">
-      <Container>
-        <h3>Sign In</h3>
-        <h6>to continue to the application</h6>
-        <Container className="form-container">
-          <Form className="form-card" onSubmit={handleSubmit}>
-            <Form.Group className="mb-3">
-              <Form.Label>Email address</Form.Label>
-              <Form.Control
-                type="text"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </Form.Group>
-            <Button variant="secondary" type="submit">
-              Submit
-            </Button>
-            <Form.Text>
-              Don't have an account? <Link to="/register">Sign Up</Link>
-            </Form.Text>
-            <br />
-            <Form.Text className="error-message">{error}</Form.Text>
-          </Form>
-        </Container>
+      <h1 className="title-text">PhotoApp</h1>
+      <h5 className="title-text">
+        An app that let's you share your photos with everyone else!
+      </h5>
+      <Container className="form-container">
+        <Form onSubmit={handleSubmit}>
+          <h3 className="text-center">Log In</h3>
+          <h6 className="text-center">to continue to the application</h6>
+          <Form.Group className="mb-3">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control
+              type="text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </Form.Group>
+          <Button variant="secondary" type="submit">
+            Submit
+          </Button>
+          <Form.Text>
+            Don't have an account? <Link to="/register">Sign Up</Link>
+          </Form.Text>
+          <br />
+          <Form.Text className="error-message">{error}</Form.Text>
+        </Form>
       </Container>
     </Container>
   );
