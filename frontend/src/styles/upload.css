@@ -1,0 +1,45 @@
+.upload-container {
+  margin: 0;
+  padding: 0;
+  min-width: 100%;
+  min-height: 100vh;
+  position: relative;
+}
+
+.photo-container {
+  position: absolute;
+  background-color: white;
+  opacity: 0.9;
+  font-size: 13px;
+  max-width: 450px;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.photo-container h3,
+.photo-container h3 {
+  font-weight: bold;
+}
+
+.photo-container h6,
+.photo-container h6 {
+  margin-bottom: 30px;
+}
+
+.photo-container label {
+  font-weight: bold;
+}
+
+.photo-container button {
+  width: 100%;
+}
+
+.error-message {
+  font-weight: bold;
+  color: red;
+  margin-top: 10px;
+}

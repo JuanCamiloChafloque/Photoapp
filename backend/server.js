@@ -11,7 +11,9 @@
 const express = require("express");
 const cors = require("cors");
 const config = require("./utils/config");
+
 const auth = require("./routes/auth");
+const images = require("./routes/images");
 
 const app = express();
 
@@ -19,6 +21,7 @@ app.use(express.json({ strict: false, limit: "50mb" }));
 app.use(cors());
 
 app.use("/api/v1/auth", auth);
+app.use("/api/v1/images", images);
 
 app.listen(config.service_port, () => {
   console.log(`web service running on port ${config.service_port}...`);

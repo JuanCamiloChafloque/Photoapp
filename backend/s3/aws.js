@@ -4,7 +4,7 @@ const { fromIni } = require("@aws-sdk/credential-providers");
 const fs = require("fs");
 const ini = require("ini");
 
-const config = require("./config.js");
+const config = require("../utils/config.js");
 
 const photoapp_config = ini.parse(
   fs.readFileSync(config.photoapp_config, "utf-8")
