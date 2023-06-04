@@ -26,6 +26,20 @@ exports.getUserById = (id) => {
   });
 };
 
+exports.getUserByImageKey = (key) => {
+  return new Promise((resolve, reject) => {
+    const sql =
+      "SELECT * FROM users u LEFT INNER JOIN assets a ON u.id = a.userId  WHERE a.bucketKey = ?";
+    dbConnection.query(sql, [key], (err, results, _) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(results);
+    });
+  });
+};
+
 exports.getAllUsers = () => {
   return new Promise((resolve, reject) => {
     const sql = "SELECT * FROM users ORDER BY id ASC;";

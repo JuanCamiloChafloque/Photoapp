@@ -58,7 +58,15 @@ const Home = () => {
           images
             .filter((im) => im.Size > 0)
             .map((im, idx) => (
-              <Image key={idx} src={BUCKET_BASE_URL + im.Key} />
+              <Image
+                key={idx}
+                src={BUCKET_BASE_URL + im.Key}
+                onClick={() =>
+                  navigate("/photos/" + im.Key.split("/")[1], {
+                    state: { key: im.Key },
+                  })
+                }
+              />
             ))}
       </Container>
       <Container className="w-100 text-center mb-3">

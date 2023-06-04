@@ -9,6 +9,7 @@ import Header from "./components/Header";
 import MyPhotos from "./pages/MyPhotos";
 import Upload from "./pages/Upload";
 import Profile from "./pages/Profile";
+import ImageDetails from "./pages/ImageDetails";
 
 function App() {
   return (
@@ -48,6 +49,15 @@ function App() {
               <ProtectedRoute>
                 <Header />
                 <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/photos/:id"
+            element={
+              <ProtectedRoute>
+                <Header />
+                <ImageDetails />
               </ProtectedRoute>
             }
           />

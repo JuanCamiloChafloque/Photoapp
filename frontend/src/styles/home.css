@@ -10,3 +10,9 @@
   height: 350px;
   border-radius: 20px;
 }
+
+.images-container img:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+  transition: 0.5s;
+}
