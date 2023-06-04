@@ -1,0 +1,42 @@
+.signup-container,
+.signin-container {
+  width: 100%;
+  min-height: 100vh;
+  padding-top: 30px;
+  justify-content: center;
+}
+
+.signup-container h3,
+.signin-container h3 {
+  font-weight: bold;
+  text-align: center;
+}
+
+.signup-container h6,
+.signin-container h6 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.form-card {
+  font-size: 13px;
+  margin: auto;
+  max-width: 450px;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.form-card label {
+  font-weight: bold;
+}
+
+.form-card button {
+  width: 100%;
+}
+
+.error-message {
+  font-weight: bold;
+  color: red;
+  margin-top: 10px;
+}
