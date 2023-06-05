@@ -84,7 +84,7 @@ const Upload = () => {
               <>
                 <Image
                   id="upload-photo"
-                  src={"background-image.jpg"}
+                  src={preview}
                   width={250}
                   height={200}
                 />
