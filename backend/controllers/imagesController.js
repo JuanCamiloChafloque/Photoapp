@@ -31,12 +31,12 @@ exports.uploadImage = async (req, res) => {
     const s3Key = await uploadImageToS3(user[0].bucketFolder, encodedData);
     const result = await insertImage(id, assetName, description, s3Key);
 
-    // * TODO: Extract Metadata from the uploaded image and save the content in the db
+    /*     // * TODO: Extract Metadata from the uploaded image and save the content in the db
     const { date, dev, lng, lat } = await extractImageMetadata(
       assetName,
       s3Key
     );
-    await insertImageMetadata(result.insertId, dev, date, lng, lat);
+    await insertImageMetadata(result.insertId, dev, date, lng, lat); */
 
     await res.status(StatusCodes.OK).json({
       status: "success",
