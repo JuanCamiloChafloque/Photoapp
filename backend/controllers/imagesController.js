@@ -1,6 +1,7 @@
 const { StatusCodes } = require("http-status-codes");
 const {
   insertImage,
+  insertImageMetadata,
   getUserById,
   getImagesByUserId,
   getImageInfoByKey,
@@ -10,6 +11,7 @@ const {
   getS3Images,
   getS3ImagesByUser,
 } = require("../s3/operations");
+const { extractImageMetadata } = require("../utils/metadata");
 
 //@desc     Upload logged-in user image
 //@route    POST /api/v1/images/upload
@@ -29,7 +31,14 @@ exports.uploadImage = async (req, res) => {
     const s3Key = await uploadImageToS3(user[0].bucketFolder, encodedData);
     const result = await insertImage(id, assetName, description, s3Key);
 
-    res.status(StatusCodes.OK).json({
+    // * TODO: Extract Metadata from the uploaded image and save the content in the db
+    const { date, dev, lng, lat } = await extractImageMetadata(
+      assetName,
+      s3Key
+    );
+    await insertImageMetadata(result.insertId, dev, date, lng, lat);
+
+    await res.status(StatusCodes.OK).json({
       status: "success",
       message: "Successfully added new image with id: " + result.insertId,
     });

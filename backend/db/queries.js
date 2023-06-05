@@ -102,6 +102,24 @@ exports.insertImage = (userId, assetName, description, bucketKey) => {
   });
 };
 
+exports.insertImageMetadata = (assetId, device, date, lng, lat) => {
+  return new Promise((resolve, reject) => {
+    const sql =
+      "INSERT INTO metadata (assetId, device, date, longitude, latitude) VALUES (?, ?, ?, ?, ?)";
+    dbConnection.query(
+      sql,
+      [assetId, device, date, lng, lat],
+      (err, results, _) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(results);
+      }
+    );
+  });
+};
+
 exports.updateUser = (id, email, firstName, lastName) => {
   return new Promise((resolve, reject) => {
     const sql =

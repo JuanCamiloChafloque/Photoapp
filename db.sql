@@ -32,6 +32,7 @@ ALTER TABLE assets AUTO_INCREMENT = 1001;
 CREATE TABLE metadata(
     id      		int not null AUTO_INCREMENT,
     assetId       	int not null,
+    device			varchar(128) not null,
     date			varchar(128) not null,
     latitude		decimal not null,
     longitude		decimal not null,
