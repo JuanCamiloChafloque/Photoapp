@@ -55,14 +55,6 @@ const Upload = () => {
     input.click();
   };
 
-  const handleMetadataInfo = () => {
-    var img = document.getElementById("upload-photo");
-    EXIF.getData(imageFile, function () {
-      var MetaData = EXIF.getAllTags(this);
-      console.log(JSON.stringify(MetaData, null, "\t"));
-    });
-  };
-
   const validateForm = () => {
     if (!imageFile || !name || !description) {
       setError("All fields are required");
@@ -92,7 +84,7 @@ const Upload = () => {
               <>
                 <Image
                   id="upload-photo"
-                  src={preview}
+                  src={"background-image.jpg"}
                   width={250}
                   height={200}
                 />
