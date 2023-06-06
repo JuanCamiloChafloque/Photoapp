@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Geocode from "react-geocode";
 import { AiOutlineFilter, AiFillFilter } from "react-icons/ai";
 import { Container, Button, Image, Form } from "react-bootstrap";
 
@@ -10,7 +11,11 @@ const Home = () => {
   const navigate = useNavigate();
 
   const [images, setImages] = useState([]);
-  const [message, setMessage] = useState();
+  const [message, setMessage] = useState("");
+  const [date, setDate] = useState("");
+  const [location, setLocation] = useState("");
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
   const [showFilter, setShowFilter] = useState(false);
   const profile = JSON.parse(localStorage.getItem("profile"));
 
@@ -24,10 +29,14 @@ const Home = () => {
         Authorization: "Bearer " + profile.token,
       },
     };
-    const { data } = await axios.get(
-      "http://localhost:8080/api/v1/images",
-      config
-    );
+    let url = "http://localhost:8080/api/v1/images";
+    if (date) url += "?date=" + date;
+    if (location) {
+      if (date) url += "?lat=" + latitude + "&lng=" + longitude;
+      else url += "&lat=" + latitude + "&lng=" + longitude;
+    }
+
+    const { data } = await axios.get(url, config);
     setImages(data.data);
   };
 
@@ -38,11 +47,15 @@ const Home = () => {
         Authorization: "Bearer " + profile.token,
       },
     };
+
     const lastKey = images.slice(-1)[0].Key;
-    const { data } = await axios.get(
-      "http://localhost:8080/api/v1/images?offset=" + lastKey,
-      config
-    );
+    let url = "http://localhost:8080/api/v1/images?offset=" + lastKey;
+    if (date) url += "&date=" + date;
+    if (location) {
+      url += "&lat=" + latitude + "&lng=" + longitude;
+    }
+
+    const { data } = await axios.get(url, config);
     if (data.data.length === 0) {
       setMessage("No more images found");
       return;
@@ -50,8 +63,24 @@ const Home = () => {
     setImages([...images, ...data.data]);
   };
 
-  const handleSubmit = (e) => {
+  const handleClearFilters = () => {
+    setDate("");
+    setLocation("");
+    initImages();
+  };
+
+  const handleSubmitFilters = async (e) => {
     e.preventDefault();
+    if (location) {
+      Geocode.fromAddress(location).then(async (response) => {
+        if (response.status === "OK") {
+          const result = response.results[0].geometry.location;
+          setLatitude(result.lat);
+          setLongitude(result.lng);
+          initImages();
+        }
+      });
+    }
   };
 
   return (
@@ -85,17 +114,33 @@ const Home = () => {
             <p className="text-muted"> Hide Filter Search</p>
           </Container>
           <Container className="filter-container">
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={(e) => handleSubmitFilters(e)}>
               <Form.Group className="mb-2">
                 <Form.Label>Date</Form.Label>
-                <Form.Control type="date" />
+                <Form.Control
+                  type="date"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                />
               </Form.Group>
               <Form.Group className="mb-2">
                 <Form.Label>Location</Form.Label>
-                <Form.Control type="text" />
+                <Form.Control
+                  type="text"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                />
               </Form.Group>
               <Button variant="secondary" type="submit">
                 Filter
+              </Button>
+              <Button
+                className="ms-3"
+                variant="danger"
+                type="button"
+                onClick={handleClearFilters}
+              >
+                Clear
               </Button>
             </Form>
           </Container>
@@ -111,7 +156,7 @@ const Home = () => {
                 key={idx}
                 src={BUCKET_BASE_URL + im.Key}
                 onClick={() =>
-                  navigate("/photos/" + im.Key.split("/")[1], {
+                  navigate("/discover/" + im.Key.split("/")[1], {
                     state: { key: im.Key },
                   })
                 }

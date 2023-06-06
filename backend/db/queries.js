@@ -1,4 +1,5 @@
 const dbConnection = require("./database");
+const { getCoverageAreaForCoords } = require("../utils/geolocation");
 
 exports.getUserByEmail = (email) => {
   return new Promise((resolve, reject) => {
@@ -44,6 +45,44 @@ exports.getImagesByUserId = (id) => {
   return new Promise((resolve, reject) => {
     const sql = "SELECT * FROM assets WHERE userId = ?";
     dbConnection.query(sql, [id], (err, results, _) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(results);
+    });
+  });
+};
+
+exports.getImagesByMetadataFilter = (date, device, lat, lng) => {
+  return new Promise((resolve, reject) => {
+    const params = [];
+    let sql =
+      "SELECT * FROM assets a JOIN metadata m ON a.id = m.assetId WHERE";
+
+    if (date) {
+      sql += " m.date = ?";
+      params.push(date);
+    }
+
+    if (device) {
+      sql += " AND m.device = ?";
+      params.push(device);
+    }
+
+    if (lat && lng) {
+      const { minLat, maxLat, minLng, maxLng } = getCoverageAreaForCoords(
+        lat,
+        lng
+      );
+      sql += " AND m.lat >= ? AND m.lat <= ? AND m.lng >= ? AND m.lng <= ?";
+      params.push(minLat);
+      params.push(maxLat);
+      params.push(minLng);
+      params.push(maxLng);
+    }
+
+    dbConnection.query(sql, params, (err, results, _) => {
       if (err) {
         reject(err);
         return;

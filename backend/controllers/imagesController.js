@@ -5,6 +5,7 @@ const {
   getUserById,
   getImagesByUserId,
   getImageInfoByKey,
+  getImagesByMetadataFilter,
 } = require("../db/queries");
 const {
   uploadImageToS3,
@@ -55,7 +56,22 @@ exports.uploadImage = async (req, res) => {
 //@access   protected
 exports.getAllImages = async (req, res) => {
   try {
-    const response = await getS3Images(req.query.offset);
+    const { offset, date, device, lng, lat } = req.query;
+    const response = await getS3Images(offset);
+
+    if (date || device || lng || lat) {
+      const assets = await getImagesByMetadataFilter(date, device, lng, lat);
+      const filteredAssetsBucketKeys = assets.map((asset) => asset.bucketKey);
+      const filteredResults = response["Contents"].filter((asset) =>
+        filteredAssetsBucketKeys.contains(asset.Key)
+      );
+
+      return res.status(StatusCodes.OK).json({
+        message: "success",
+        data: filteredResults.length > 0 ? filteredResults : [],
+      });
+    }
+
     res.status(StatusCodes.OK).json({
       message: "success",
       data: response["KeyCount"] > 0 ? response["Contents"] : [],

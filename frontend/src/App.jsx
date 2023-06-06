@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import Geocode from "react-geocode";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -12,6 +13,9 @@ import Profile from "./pages/Profile";
 import ImageDetails from "./pages/ImageDetails";
 
 function App() {
+  Geocode.setApiKey("AIzaSyD18ZwY2PLxYqoz5OVmVufHEQc2VOTOET8");
+  Geocode.setLanguage("en");
+
   return (
     <>
       <BrowserRouter>
@@ -53,7 +57,7 @@ function App() {
             }
           />
           <Route
-            path="/photos/:id"
+            path="/discover/:id"
             element={
               <ProtectedRoute>
                 <Header />

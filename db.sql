@@ -34,8 +34,8 @@ CREATE TABLE metadata(
     assetId       	int not null,
     device			varchar(128) not null,
     date			varchar(128) not null,
-    latitude		decimal not null,
-    longitude		decimal not null,
+    latitude		double not null,
+    longitude		double not null,
     PRIMARY KEY 	(id),
     FOREIGN KEY 	(assetId) REFERENCES assets(id));
 
@@ -55,3 +55,5 @@ INSERT INTO assets (userId, assetName, description, bucketKey) VALUES (80002, 'a
 INSERT INTO assets (userId, assetName, description, bucketKey) VALUES (80002, 'cat-vibes.jpg', 'A cool cat with space-looking glasses', 'db8a31e2-f437-4813-85d4-33a4980febc5/659441e1-b56e-4720-85e8-117c4fdbb0ab.jpg');
 INSERT INTO assets (userId, assetName, description, bucketKey) VALUES (80002, 'dog-smiling.jpg', 'A cool picture I took of my dog with some awesome glasses', 'db8a31e2-f437-4813-85d4-33a4980febc5/c17dbc50-505a-43dd-b9d3-60825403b07b.jpg');
 INSERT INTO assets (userId, assetName, description, bucketKey) VALUES (80002, 'ufo.jpg', 'A picture I took of a thing I saw in the sky onw night...', 'db8a31e2-f437-4813-85d4-33a4980febc5/d49a3e6e-b76d-46bd-84d2-df55495ee644.jpg');
+
+INSERT INTO metadata(assetId, device, date, latitude, longitude) VALUES(1012, 'Iphone', '2023-05-31', 42.05818, -87.68313);
