@@ -57,21 +57,22 @@ exports.uploadImage = async (req, res) => {
 exports.getAllImages = async (req, res) => {
   try {
     const { offset, date, lng, lat } = req.query;
-    const response = await getS3Images(offset);
+    let response = undefined;
 
     if (date || lng || lat) {
+      response = await getS3Images(offset, 100);
       const assets = await getImagesByMetadataFilter(date, lat, lng);
       const filteredAssetsBucketKeys = assets.map((asset) => asset.bucketKey);
       const filteredResults = response["Contents"].filter((asset) =>
         filteredAssetsBucketKeys.includes(asset.Key)
       );
-
       return res.status(StatusCodes.OK).json({
         message: "success",
         data: filteredResults.length > 0 ? filteredResults : [],
       });
     }
 
+    response = await getS3Images(offset, 6);
     res.status(StatusCodes.OK).json({
       message: "success",
       data: response["KeyCount"] > 0 ? response["Contents"] : [],

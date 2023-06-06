@@ -21,11 +21,12 @@ exports.uploadImageToS3 = async (bucketFolder, data) => {
   return key;
 };
 
-exports.getS3Images = async (offset) => {
+exports.getS3Images = async (offset, maxKeys) => {
+  const startAfter = offset === "start" ? undefined : offset;
   const input = {
     Bucket: s3_bucket_name,
-    MaxKeys: 100,
-    StartAfter: offset || undefined,
+    MaxKeys: maxKeys,
+    StartAfter: startAfter,
   };
   const command = new ListObjectsV2Command(input);
   const response = await s3.send(command);
