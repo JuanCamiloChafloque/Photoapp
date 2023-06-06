@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { toast } from "react-toastify";
+import moment from "moment";
+import Geocode from "react-geocode";
 import { Container, Image } from "react-bootstrap";
 
 const MyPhotos = () => {
@@ -24,28 +25,24 @@ const MyPhotos = () => {
       "http://localhost:8080/api/v1/images/" + profile.user.bucketFolder,
       config
     );
-    setImages(data.data);
+
+    const images = data.data.map((img) => {
+      return {
+        ...img,
+        location: "Chicago, IL",
+      };
+    });
+
+    setImages(images);
   };
 
-  const handleDelete = async (key) => {
-    try {
-      const config = {
-        headers: {
-          Authorization: "Bearer " + profile.token,
-        },
-      };
-      const { data } = await axios.delete(
-        "http://localhost:8080/api/v1/images?key=" + key,
-        config
-      );
-      toast.success(data.message, {
-        position: toast.POSITION.TOP_CENTER,
-        theme: "colored",
-      });
-      initImages();
-    } catch (err) {
-      console.log(err.response.data.message);
-    }
+  const handleCoordsToAddress = async (lat, lng) => {
+    console.log(lat, lng);
+    if (lat === undefined && lng === undefined) return "Unknown";
+    const response = await Geocode.fromLatLng(lat, lng);
+    const address = response.results[0].formatted_address;
+    if (address) return address;
+    return "Unknown";
   };
 
   return (
@@ -63,14 +60,12 @@ const MyPhotos = () => {
             <Container key={idx} className="d-block">
               <Image src={BUCKET_BASE_URL + im.bucketKey} />
               <p className="ps-2 p-0 m-0">
-                <strong>Photo name:</strong> {im.assetName}
+                <strong>{im.description}</strong>
               </p>
-              <p className="ps-2 p-0 m-0">
-                <strong>Description:</strong> {im.description}
+              <p className="ps-2 p-0 m-0 text-muted">
+                🗓️ Taken on: {moment(im.date).format("MMMM Do YYYY")}
               </p>
-              <p className="ps-2 p-0 m-0">
-                <strong>Date taken:</strong>
-              </p>
+              <p className="ps-2 p-0 m-0 text-muted mb-4">📍 {im.location}</p>
             </Container>
           ))}
       </Container>

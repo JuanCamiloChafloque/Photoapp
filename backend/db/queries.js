@@ -43,7 +43,8 @@ exports.getImageInfoByKey = (key) => {
 
 exports.getImagesByUserId = (id) => {
   return new Promise((resolve, reject) => {
-    const sql = "SELECT * FROM assets WHERE userId = ?";
+    const sql =
+      "SELECT * FROM assets a LEFT JOIN metadata m ON a.id = m.assetId WHERE userId = ?";
     dbConnection.query(sql, [id], (err, results, _) => {
       if (err) {
         reject(err);
