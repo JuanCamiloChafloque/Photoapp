@@ -25,7 +25,8 @@ const Home = () => {
     initImages();
   }, []);
 
-  const initImages = async () => {
+  const initImages = async (date = null, lat = null, lng = null) => {
+    setMessage("");
     const config = {
       headers: {
         Authorization: "Bearer " + profile.token,
@@ -33,11 +34,21 @@ const Home = () => {
     };
     let url = "http://localhost:8080/api/v1/images?offset=start";
     if (date) url += "&date=" + date;
-    if (location) {
-      url += "&lat=" + latitude + "&lng=" + longitude;
+    if (lat && lng) {
+      url += "&lat=" + lat + "&lng=" + lng;
     }
     const { data } = await axios.get(url, config);
     setImages(data.data);
+    if (data.data.length === 0) {
+      setMessage("No results found for your search");
+    }
+
+    if (date === null) setDate("");
+    if (lat === null && lng === null) setLocation("");
+    else {
+      setLatitude(lat);
+      setLongitude(lng);
+    }
   };
 
   const getMoreImages = async () => {
@@ -75,26 +86,18 @@ const Home = () => {
       Geocode.fromAddress(location).then(async (response) => {
         if (response.status === "OK") {
           const result = response.results[0].geometry.location;
-          setLatitude(result.lat);
-          setLongitude(result.lng);
-          initImages();
+          initImages(date, result.lat, result.lng);
         } else {
           setFilterMessage("Address not found");
         }
       });
     } else {
-      initImages();
+      initImages(date, null, null);
     }
   };
 
   const handleClearFilters = () => {
-    setDate("");
-    setFilterMessage("");
-    setLocation("");
-    setMessage("");
-    setTimeout(() => {
-      initImages();
-    }, 1000);
+    initImages(null, null, null);
   };
 
   return (

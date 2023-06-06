@@ -37,6 +37,7 @@ const FilterForm = ({
             <Form.Label>Location</Form.Label>
             <Form.Control
               type="text"
+              placeholder="Enter any city, country, or a specific location"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
             />

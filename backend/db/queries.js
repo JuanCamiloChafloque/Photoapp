@@ -58,7 +58,7 @@ exports.getImagesByMetadataFilter = (date, lat, lng) => {
   return new Promise((resolve, reject) => {
     const params = [];
     let sql =
-      "SELECT * FROM assets a JOIN metadata m ON a.id = m.assetId WHERE";
+      "SELECT * FROM assets a JOIN metadata m ON a.id = m.assetId WHERE ";
 
     if (date && lat && lng) {
       const { minLat, maxLat, minLng, maxLng } = getCoverageAreaForCoords(
@@ -66,29 +66,37 @@ exports.getImagesByMetadataFilter = (date, lat, lng) => {
         lng
       );
       sql +=
-        " m.date = ? AND m.latitude >= ? AND m.latitude <= ? AND m.longitude >= ? AND m.longitude <= ?";
+        "m.date = ? AND m.latitude >= ? AND m.latitude <= ? AND m.longitude >= ? AND m.longitude <= ?";
       params.push(date);
       params.push(minLat);
       params.push(maxLat);
       params.push(minLng);
       params.push(maxLng);
     } else if (date && !lat && !lng) {
-      sql += " m.date = ?";
+      sql += "m.date = ?";
       params.push(date);
     } else if (!date && lat && lng) {
+      const { minLat, maxLat, minLng, maxLng } = getCoverageAreaForCoords(
+        lat,
+        lng
+      );
       sql +=
-        " m.latitude >= ? AND m.latitude <= ? AND m.longitude >= ? AND m.longitude <= ?";
+        "m.latitude >= ? AND m.latitude <= ? AND m.longitude >= ? AND m.longitude <= ?";
       params.push(minLat);
       params.push(maxLat);
       params.push(minLng);
       params.push(maxLng);
     }
 
+    console.log(sql);
+
     dbConnection.query(sql, params, (err, results, _) => {
       if (err) {
+        console.log(err);
         reject(err);
         return;
       }
+      console.log(results);
       resolve(results);
     });
   });
