@@ -56,14 +56,14 @@ exports.uploadImage = async (req, res) => {
 //@access   protected
 exports.getAllImages = async (req, res) => {
   try {
-    const { offset, date, device, lng, lat } = req.query;
+    const { offset, date, lng, lat } = req.query;
     const response = await getS3Images(offset);
 
-    if (date || device || lng || lat) {
-      const assets = await getImagesByMetadataFilter(date, device, lng, lat);
+    if (date || lng || lat) {
+      const assets = await getImagesByMetadataFilter(date, lat, lng);
       const filteredAssetsBucketKeys = assets.map((asset) => asset.bucketKey);
       const filteredResults = response["Contents"].filter((asset) =>
-        filteredAssetsBucketKeys.contains(asset.Key)
+        filteredAssetsBucketKeys.includes(asset.Key)
       );
 
       return res.status(StatusCodes.OK).json({

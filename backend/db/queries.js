@@ -54,28 +54,30 @@ exports.getImagesByUserId = (id) => {
   });
 };
 
-exports.getImagesByMetadataFilter = (date, device, lat, lng) => {
+exports.getImagesByMetadataFilter = (date, lat, lng) => {
   return new Promise((resolve, reject) => {
     const params = [];
     let sql =
       "SELECT * FROM assets a JOIN metadata m ON a.id = m.assetId WHERE";
 
-    if (date) {
-      sql += " m.date = ?";
-      params.push(date);
-    }
-
-    if (device) {
-      sql += " AND m.device = ?";
-      params.push(device);
-    }
-
-    if (lat && lng) {
+    if (date && lat && lng) {
       const { minLat, maxLat, minLng, maxLng } = getCoverageAreaForCoords(
         lat,
         lng
       );
-      sql += " AND m.lat >= ? AND m.lat <= ? AND m.lng >= ? AND m.lng <= ?";
+      sql +=
+        " m.date = ? AND m.latitude >= ? AND m.latitude <= ? AND m.longitude >= ? AND m.longitude <= ?";
+      params.push(date);
+      params.push(minLat);
+      params.push(maxLat);
+      params.push(minLng);
+      params.push(maxLng);
+    } else if (date && !lat && !lng) {
+      sql += " m.date = ?";
+      params.push(date);
+    } else if (!date && lat && lng) {
+      sql +=
+        " m.latitude >= ? AND m.latitude <= ? AND m.longitude >= ? AND m.longitude <= ?";
       params.push(minLat);
       params.push(maxLat);
       params.push(minLng);

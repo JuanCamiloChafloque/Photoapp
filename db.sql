@@ -32,7 +32,6 @@ ALTER TABLE assets AUTO_INCREMENT = 1001;
 CREATE TABLE metadata(
     id      		int not null AUTO_INCREMENT,
     assetId       	int not null,
-    device			varchar(128) not null,
     date			varchar(128) not null,
     latitude		double not null,
     longitude		double not null,
@@ -56,4 +55,4 @@ INSERT INTO assets (userId, assetName, description, bucketKey) VALUES (80002, 'c
 INSERT INTO assets (userId, assetName, description, bucketKey) VALUES (80002, 'dog-smiling.jpg', 'A cool picture I took of my dog with some awesome glasses', 'db8a31e2-f437-4813-85d4-33a4980febc5/c17dbc50-505a-43dd-b9d3-60825403b07b.jpg');
 INSERT INTO assets (userId, assetName, description, bucketKey) VALUES (80002, 'ufo.jpg', 'A picture I took of a thing I saw in the sky onw night...', 'db8a31e2-f437-4813-85d4-33a4980febc5/d49a3e6e-b76d-46bd-84d2-df55495ee644.jpg');
 
-INSERT INTO metadata(assetId, device, date, latitude, longitude) VALUES(1012, 'Iphone', '2023-05-31', 42.05818, -87.68313);
+INSERT INTO metadata(assetId, date, latitude, longitude) VALUES(1012, '2023-05-31', 42.05818, -87.68313);

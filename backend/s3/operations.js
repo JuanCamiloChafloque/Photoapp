@@ -24,7 +24,7 @@ exports.uploadImageToS3 = async (bucketFolder, data) => {
 exports.getS3Images = async (offset) => {
   const input = {
     Bucket: s3_bucket_name,
-    MaxKeys: 6,
+    MaxKeys: 100,
     StartAfter: offset || undefined,
   };
   const command = new ListObjectsV2Command(input);

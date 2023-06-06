@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Geocode from "react-geocode";
@@ -10,8 +10,18 @@ const Home = () => {
     "https://photoapp-camilochafloque.s3.us-east-2.amazonaws.com/";
   const navigate = useNavigate();
 
+  const autoCompleteRef = useRef();
+  const inputRef = useRef();
+
+  const options = {
+    componentRestrictions: { country: "us" },
+    fields: ["address_components", "geometry", "icon", "name"],
+    types: ["establishment"],
+  };
+
   const [images, setImages] = useState([]);
   const [message, setMessage] = useState("");
+  const [filterMessage, setFilterMessage] = useState("");
   const [date, setDate] = useState("");
   const [location, setLocation] = useState("");
   const [latitude, setLatitude] = useState(null);
@@ -23,6 +33,25 @@ const Home = () => {
     initImages();
   }, []);
 
+  useEffect(() => {
+    if (window.google) {
+      console.log("sdads");
+      autoCompleteRef.current = new window.google.maps.places.Autocomplete(
+        inputRef.current,
+        options
+      );
+      autoCompleteRef.current.addListener("place_changed", async function () {
+        const { address_components: place } =
+          await autoCompleteRef.current.getPlace();
+        let fullAddress = "";
+        place.forEach((p) => {
+          fullAddress += p["long_name"] + ",";
+        });
+        setLocation(fullAddress);
+      });
+    }
+  }, [window.google]);
+
   const initImages = async () => {
     const config = {
       headers: {
@@ -32,10 +61,9 @@ const Home = () => {
     let url = "http://localhost:8080/api/v1/images";
     if (date) url += "?date=" + date;
     if (location) {
-      if (date) url += "?lat=" + latitude + "&lng=" + longitude;
-      else url += "&lat=" + latitude + "&lng=" + longitude;
+      if (date) url += "&lat=" + latitude + "&lng=" + longitude;
+      else url += "?lat=" + latitude + "&lng=" + longitude;
     }
-
     const { data } = await axios.get(url, config);
     setImages(data.data);
   };
@@ -63,14 +91,14 @@ const Home = () => {
     setImages([...images, ...data.data]);
   };
 
-  const handleClearFilters = () => {
-    setDate("");
-    setLocation("");
-    initImages();
-  };
-
   const handleSubmitFilters = async (e) => {
     e.preventDefault();
+    setFilterMessage();
+    if (!location && !date) {
+      setFilterMessage("One of the filter fields is required");
+      return;
+    }
+
     if (location) {
       Geocode.fromAddress(location).then(async (response) => {
         if (response.status === "OK") {
@@ -78,9 +106,23 @@ const Home = () => {
           setLatitude(result.lat);
           setLongitude(result.lng);
           initImages();
+        } else {
+          setFilterMessage("Address not found");
         }
       });
+    } else {
+      initImages();
     }
+  };
+
+  const handleClearFilters = () => {
+    setDate("");
+    setFilterMessage("");
+    setLocation("");
+    setMessage("");
+    setTimeout(() => {
+      initImages();
+    }, 1000);
   };
 
   return (
@@ -99,7 +141,7 @@ const Home = () => {
             size={28}
             onClick={() => setShowFilter((prev) => !prev)}
           />
-          <p className="text-muted"> Show Filter Search</p>
+          <p className="text-muted">Show Filter Search</p>
         </Container>
       )}
       {showFilter && (
@@ -125,11 +167,7 @@ const Home = () => {
               </Form.Group>
               <Form.Group className="mb-2">
                 <Form.Label>Location</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                />
+                <Form.Control as="input" ref={inputRef} />
               </Form.Group>
               <Button variant="secondary" type="submit">
                 Filter
@@ -143,6 +181,9 @@ const Home = () => {
                 Clear
               </Button>
             </Form>
+            <Container className="text-center error-message">
+              {filterMessage}
+            </Container>
           </Container>
           <hr />
         </>
