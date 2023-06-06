@@ -18,7 +18,7 @@ const { extractImageMetadata } = require("../utils/metadata");
 //@route    POST /api/v1/images/upload
 //@access   protected
 exports.uploadImage = async (req, res) => {
-  const { assetName, encodedData, description } = req.body;
+  const { assetName, encodedData, description, date, lng, lat } = req.body;
   if (!assetName || !encodedData || !description) {
     res.status(StatusCodes.BAD_REQUEST).json({
       status: "error",
@@ -31,17 +31,11 @@ exports.uploadImage = async (req, res) => {
     const user = await getUserById(id);
     const s3Key = await uploadImageToS3(user[0].bucketFolder, encodedData);
     const result = await insertImage(id, assetName, description, s3Key);
-
-    /*     // * TODO: Extract Metadata from the uploaded image and save the content in the db
-    const { date, dev, lng, lat } = await extractImageMetadata(
-      assetName,
-      s3Key
-    );
-    await insertImageMetadata(result.insertId, dev, date, lng, lat); */
+    //await insertImageMetadata(result.insertId, date, lng, lat);
 
     await res.status(StatusCodes.OK).json({
       status: "success",
-      message: "Successfully added new image with id: " + result.insertId,
+      message: `Successfully added the new image ${assetName} to your profile`,
     });
   } catch (err) {
     res.status(StatusCodes.BAD_REQUEST).json({

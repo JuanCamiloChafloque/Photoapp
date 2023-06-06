@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import EXIF from "exif-js";
 import { toast } from "react-toastify";
 import { BiImageAdd } from "react-icons/bi";
 import axios from "axios";
@@ -9,6 +10,7 @@ const Upload = () => {
   const navigate = useNavigate();
   const profile = JSON.parse(localStorage.getItem("profile"));
   const [imageFile, setImageFile] = useState(null);
+  const [metadata, setMetadata] = useState(null);
   const [preview, setPreview] = useState(null);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -45,8 +47,10 @@ const Upload = () => {
     let input = document.createElement("input");
     input.type = "file";
     input.accept = "image/*";
-    input.onchange = () => {
+    input.onchange = async () => {
       let files = Array.from(input.files);
+      //const extractedMetadata = await extractMetadata(files[0]);
+      //setMetadata(extractedMetadata);
       setImageFile(files[0]);
       setName(files[0].name);
       const objectUrl = URL.createObjectURL(files[0]);
@@ -72,6 +76,31 @@ const Upload = () => {
     });
     const result = await encodePromise;
     return result;
+  };
+
+  const extractMetadata = (imageFile) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+        const image = document.createElement("img");
+        image.src = event.target.result;
+
+        image.onload = () => {
+          EXIF.getData(image, () => {
+            const exifData = EXIF.getAllTags(this);
+            console.log(exifData);
+            resolve(exifData);
+          });
+        };
+      };
+
+      reader.onerror = (error) => {
+        reject(error);
+      };
+
+      reader.readAsDataURL(imageFile);
+    });
   };
 
   return (

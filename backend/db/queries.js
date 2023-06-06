@@ -30,7 +30,7 @@ exports.getUserById = (id) => {
 exports.getImageInfoByKey = (key) => {
   return new Promise((resolve, reject) => {
     const sql =
-      "SELECT * FROM users u JOIN assets a ON u.id = a.userId WHERE a.bucketKey = ?";
+      "SELECT * FROM users u JOIN assets a JOIN metadata m ON u.id = a.userId AND a.id = m.assetId WHERE a.bucketKey = ?";
     dbConnection.query(sql, [key], (err, results, _) => {
       if (err) {
         reject(err);
@@ -152,21 +152,17 @@ exports.insertImage = (userId, assetName, description, bucketKey) => {
   });
 };
 
-exports.insertImageMetadata = (assetId, device, date, lng, lat) => {
+exports.insertImageMetadata = (assetId, date, lng, lat) => {
   return new Promise((resolve, reject) => {
     const sql =
-      "INSERT INTO metadata (assetId, device, date, longitude, latitude) VALUES (?, ?, ?, ?, ?)";
-    dbConnection.query(
-      sql,
-      [assetId, device, date, lng, lat],
-      (err, results, _) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        resolve(results);
+      "INSERT INTO metadata (assetId, date, longitude, latitude) VALUES (?, ?, ?, ?)";
+    dbConnection.query(sql, [assetId, date, lng, lat], (err, results, _) => {
+      if (err) {
+        reject(err);
+        return;
       }
-    );
+      resolve(results);
+    });
   });
 };
 
