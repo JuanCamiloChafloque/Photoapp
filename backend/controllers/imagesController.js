@@ -7,12 +7,7 @@ const {
   getImageInfoByKey,
   getImagesByMetadataFilter,
 } = require("../db/queries");
-const {
-  uploadImageToS3,
-  getS3Images,
-  getS3ImagesByUser,
-} = require("../s3/operations");
-const { extractImageMetadata } = require("../utils/metadata");
+const { uploadImageToS3, getS3Images } = require("../s3/operations");
 
 //@desc     Upload logged-in user image
 //@route    POST /api/v1/images/upload
@@ -31,6 +26,8 @@ exports.uploadImage = async (req, res) => {
     const user = await getUserById(id);
     const s3Key = await uploadImageToS3(user[0].bucketFolder, encodedData);
     const result = await insertImage(id, assetName, description, s3Key);
+
+    //TODO: insert metadata info that comes from the frontend body
     //await insertImageMetadata(result.insertId, date, lng, lat);
 
     await res.status(StatusCodes.OK).json({
