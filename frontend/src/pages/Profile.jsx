@@ -23,7 +23,7 @@ const Profile = () => {
         },
       };
       const { data } = await axios.put(
-        "http://photoapp-service-env.eba-ywmaufi5.us-east-2.elasticbeanstalk.com/api/v1/auth/update",
+        import.meta.env.VITE_SERVER_URL + "api/v1/auth/update",
         { email, firstName, lastName },
         config
       );

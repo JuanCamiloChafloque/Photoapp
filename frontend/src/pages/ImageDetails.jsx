@@ -24,8 +24,7 @@ const ImageDetails = () => {
     };
     const key = location.state.key;
     const { data } = await axios.get(
-      "http://photoapp-service-env.eba-ywmaufi5.us-east-2.elasticbeanstalk.com/api/v1/images/details?key=" +
-        key,
+      import.meta.env.VITE_SERVER_URL + "api/v1/images/details?key=" + key,
       config
     );
     setImageData(data.result);

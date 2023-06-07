@@ -23,7 +23,7 @@ const Login = () => {
     if (!validateForm()) return;
     try {
       const { data } = await axios.post(
-        "http://photoapp-service-env.eba-ywmaufi5.us-east-2.elasticbeanstalk.com/api/v1/auth/login",
+        import.meta.env.VITE_SERVER_URL + "api/v1/auth/login",
         { email, password }
       );
       localStorage.setItem("profile", JSON.stringify(data));

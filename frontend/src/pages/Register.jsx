@@ -24,7 +24,7 @@ const Register = () => {
     if (!validateForm()) return;
     try {
       const { data } = await axios.post(
-        "http://photoapp-service-env.eba-ywmaufi5.us-east-2.elasticbeanstalk.com/api/v1/auth/register",
+        import.meta.env.VITE_SERVER_URL + "api/v1/auth/register",
         { email, password, firstName, lastName }
       );
       localStorage.setItem("profile", JSON.stringify(data));
