@@ -27,9 +27,14 @@ const Upload = () => {
           Authorization: "Bearer " + profile.token,
         },
       };
+
+      const date = new Date().toISOString().substring(0, 10);
+      const lat = 42.05901;
+      const lng = -87.67442;
+
       const { data } = await axios.post(
         "http://localhost:8080/api/v1/images/upload",
-        { assetName: name, encodedData, description },
+        { assetName: name, encodedData, description, date, lat, lng },
         config
       );
       toast.success(data.message, {

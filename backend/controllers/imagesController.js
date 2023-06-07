@@ -26,9 +26,7 @@ exports.uploadImage = async (req, res) => {
     const user = await getUserById(id);
     const s3Key = await uploadImageToS3(user[0].bucketFolder, encodedData);
     const result = await insertImage(id, assetName, description, s3Key);
-
-    //TODO: insert metadata info that comes from the frontend body
-    //await insertImageMetadata(result.insertId, date, lng, lat);
+    await insertImageMetadata(result.insertId, date, lng, lat);
 
     await res.status(StatusCodes.OK).json({
       status: "success",
