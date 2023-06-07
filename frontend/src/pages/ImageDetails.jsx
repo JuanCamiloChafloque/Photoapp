@@ -24,7 +24,8 @@ const ImageDetails = () => {
     };
     const key = location.state.key;
     const { data } = await axios.get(
-      "http://localhost:8080/api/v1/images/details?key=" + key,
+      "http://photoapp-service-env.eba-ywmaufi5.us-east-2.elasticbeanstalk.com/api/v1/images/details?key=" +
+        key,
       config
     );
     setImageData(data.result);

@@ -32,7 +32,8 @@ const Home = () => {
         Authorization: "Bearer " + profile.token,
       },
     };
-    let url = "http://localhost:8080/api/v1/images?offset=start";
+    let url =
+      "http://photoapp-service-env.eba-ywmaufi5.us-east-2.elasticbeanstalk.com/api/v1/images?offset=start";
     if (date) url += "&date=" + date;
     if (lat && lng) {
       url += "&lat=" + lat + "&lng=" + lng;
@@ -60,7 +61,9 @@ const Home = () => {
     };
 
     const lastKey = images.slice(-1)[0].Key;
-    let url = "http://localhost:8080/api/v1/images?offset=" + lastKey;
+    let url =
+      "http://photoapp-service-env.eba-ywmaufi5.us-east-2.elasticbeanstalk.com/api/v1/images?offset=" +
+      lastKey;
     if (date) url += "&date=" + date;
     if (location) {
       url += "&lat=" + latitude + "&lng=" + longitude;

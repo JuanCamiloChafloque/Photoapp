@@ -30,7 +30,7 @@ const Upload = () => {
       };
 
       const { data } = await axios.post(
-        "http://localhost:8080/api/v1/images/upload",
+        "http://photoapp-service-env.eba-ywmaufi5.us-east-2.elasticbeanstalk.com/api/v1/images/upload",
         {
           assetName: name,
           encodedData,

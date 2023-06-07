@@ -22,7 +22,8 @@ const MyPhotos = () => {
       },
     };
     const { data } = await axios.get(
-      "http://localhost:8080/api/v1/images/" + profile.user.bucketFolder,
+      "http://photoapp-service-env.eba-ywmaufi5.us-east-2.elasticbeanstalk.com/api/v1/images/" +
+        profile.user.bucketFolder,
       config
     );
 
