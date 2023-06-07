@@ -9,7 +9,7 @@
 .details-image {
   margin: 0;
   padding: 0;
-  min-width: 50%;
+  min-width: 60%;
   text-align: center;
 }
 
@@ -23,7 +23,7 @@
 .details-info {
   margin: 0;
   padding: 30px;
-  min-width: 50%;
+  min-width: 40%;
 }
 
 .details-info h1 {
