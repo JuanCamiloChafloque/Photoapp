@@ -3,6 +3,7 @@ import axios from "axios";
 import moment from "moment";
 import { useLocation } from "react-router-dom";
 import { Container, Image } from "react-bootstrap";
+import Map from "../components/Map";
 
 const ImageDetails = () => {
   const BUCKET_BASE_URL =
@@ -52,6 +53,7 @@ const ImageDetails = () => {
           ✅ Posted by: {imageData.firstName} {imageData.lastName}
         </h4>
         <h4 className="text-muted">📧 Contact: {imageData.email}</h4>
+        <Map lat={imageData.latitude} lng={imageData.longitude} />
       </Container>
     </Container>
   );
