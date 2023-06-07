@@ -26,10 +26,19 @@ const MyPhotos = () => {
       config
     );
 
+    const locations = {};
+    for (let i = 0; i < data.data.length; i++) {
+      const addr = await handleCoordsToAddress(
+        data.data[i].latitude,
+        data.data[i].longitude
+      );
+      locations[data.data[i].assetName] = addr;
+    }
+
     const images = data.data.map((img) => {
       return {
         ...img,
-        location: "Chicago, IL",
+        location: locations[img.assetName],
       };
     });
 
@@ -37,7 +46,6 @@ const MyPhotos = () => {
   };
 
   const handleCoordsToAddress = async (lat, lng) => {
-    console.log(lat, lng);
     if (lat === undefined && lng === undefined) return "Unknown";
     const response = await Geocode.fromLatLng(lat, lng);
     const address = response.results[0].formatted_address;

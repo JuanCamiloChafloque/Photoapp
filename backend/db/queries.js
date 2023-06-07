@@ -89,15 +89,11 @@ exports.getImagesByMetadataFilter = (date, lat, lng) => {
       params.push(maxLng);
     }
 
-    console.log(sql);
-
     dbConnection.query(sql, params, (err, results, _) => {
       if (err) {
-        console.log(err);
         reject(err);
         return;
       }
-      console.log(results);
       resolve(results);
     });
   });
