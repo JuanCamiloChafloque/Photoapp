@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import EXIF from "exif-js";
+import Exifr from "exifr";
+import moment from "moment";
 import { toast } from "react-toastify";
 import { BiImageAdd } from "react-icons/bi";
 import axios from "axios";
@@ -28,13 +29,16 @@ const Upload = () => {
         },
       };
 
-      const date = new Date().toISOString().substring(0, 10);
-      const lat = 42.05901;
-      const lng = -87.67442;
-
       const { data } = await axios.post(
         "http://localhost:8080/api/v1/images/upload",
-        { assetName: name, encodedData, description, date, lat, lng },
+        {
+          assetName: name,
+          encodedData,
+          description,
+          date: metadata.date,
+          lat: metadata.lat,
+          lng: metadata.lng,
+        },
         config
       );
       toast.success(data.message, {
@@ -48,14 +52,13 @@ const Upload = () => {
     }
   };
 
-  const handleFileView = () => {
+  const handleFileView = async () => {
     let input = document.createElement("input");
     input.type = "file";
     input.accept = "image/*";
     input.onchange = async () => {
       let files = Array.from(input.files);
-      //const extractedMetadata = await extractMetadata(files[0]);
-      //setMetadata(extractedMetadata);
+      await extractMetadata(files[0]);
       setImageFile(files[0]);
       setName(files[0].name);
       const objectUrl = URL.createObjectURL(files[0]);
@@ -83,29 +86,22 @@ const Upload = () => {
     return result;
   };
 
-  const extractMetadata = (imageFile) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-
-      reader.onload = (event) => {
-        const image = document.createElement("img");
-        image.src = event.target.result;
-
-        image.onload = () => {
-          EXIF.getData(image, () => {
-            const exifData = EXIF.getAllTags(this);
-            console.log(exifData);
-            resolve(exifData);
-          });
-        };
-      };
-
-      reader.onerror = (error) => {
-        reject(error);
-      };
-
-      reader.readAsDataURL(imageFile);
-    });
+  const extractMetadata = async (imageFile) => {
+    try {
+      const metadata = await Exifr.parse(imageFile);
+      const latitude = metadata?.latitude;
+      const longitude = metadata?.longitude;
+      const dateCreated = metadata?.DateTimeOriginal;
+      setMetadata({
+        date: dateCreated
+          ? moment(dateCreated).format().substring(0, 10)
+          : new Date().toISOString().substring(0, 10),
+        lat: latitude || -1000,
+        lng: longitude || -1000,
+      });
+    } catch (error) {
+      console.error("Error parsing image metadata:", error);
+    }
   };
 
   return (

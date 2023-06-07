@@ -46,7 +46,7 @@ const MyPhotos = () => {
   };
 
   const handleCoordsToAddress = async (lat, lng) => {
-    if (lat === undefined && lng === undefined) return "Unknown";
+    if (lat === -1000 && lng === -1000) return "Unknown";
     const response = await Geocode.fromLatLng(lat, lng);
     const address = response.results[0].formatted_address;
     if (address) return address;

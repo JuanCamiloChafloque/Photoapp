@@ -53,7 +53,9 @@ const ImageDetails = () => {
           ✅ Posted by: {imageData.firstName} {imageData.lastName}
         </h4>
         <h4 className="text-muted">📧 Contact: {imageData.email}</h4>
-        <Map lat={imageData.latitude} lng={imageData.longitude} />
+        {imageData.latitude !== -1000 && imageData.longitude !== -1000 && (
+          <Map lat={imageData.latitude} lng={imageData.longitude} />
+        )}
       </Container>
     </Container>
   );

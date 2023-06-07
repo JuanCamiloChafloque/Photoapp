@@ -1,4 +1,0 @@
-// EXTRAER METADATA Y LISTOOO
-- Tratar de poner el coord->address en my-photos page
-- imagesController.js line 31
-- upload.jsx line 52
