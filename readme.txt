@@ -30,3 +30,4 @@ Python client to a full React application that was deployed to Netlify. The main
   the photo to the app. The images are stored in S3 and as well, we used the exifr module to extract the metadata from the image before its uploaded and save it
   in the RDS database. The two metadatas that are extracted are the coordinates in which the photo was taken and the date it was taken.
 
+Backend AWS EC2 endpoint: https://photoapp-camilochafloque.s3.us-east-2.amazonaws.com/
