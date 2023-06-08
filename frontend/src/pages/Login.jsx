@@ -42,7 +42,10 @@ const Login = () => {
   };
 
   return (
-    <Container className="signin-container">
+    <Container
+      className="signin-container"
+      style={{ backgroundImage: "url(./background-image.jpg)" }}
+    >
       <h1 className="title-text">PhotoApp</h1>
       <h5 className="title-text">
         An app that let's you share your photos with everyone else!
